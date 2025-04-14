@@ -1,5 +1,5 @@
 .section .data
-    num1: .long 4       
+    num1: .long 411       
     num2: .long 12      
     msg: .ascii "The result of multiplication is: "
     msg_len = . - msg
