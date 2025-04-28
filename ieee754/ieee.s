@@ -1,10 +1,10 @@
 .section .data
-    msg: .ascii "Hello, world\n"
-    len = . - msg
     double_1: .double 3.5
     double_2: .double 3.14
-
-    # 
+    msg:    .ascii "The sum is: "
+	msgLen  = . - msg
+    result: .space 20
+	newline: .ascii "\n"
 
     binary_fmt: .ascii "IEEE 754 Reprezentacja:\n"
                 .ascii "Znak: "
@@ -20,13 +20,6 @@
 .global _start
 
 _start:
-    # testowy print
-    movl $4, %eax
-    movl $1, %ebx
-    movl $msg, %ecx
-    movl $len, %edx
-    int $0x80
-
     # Laduje wartosc double (8 bajtow)
     movq double_1, %rax
     
@@ -46,6 +39,7 @@ _start:
     # Zamieniam bity wykladnika na ASCII
     mov $10, %rcx        # 11 bitow, indeksy 0-10
     lea exp_buf+10, %rdi # Zaczynam od konca bo tak latwiej
+
 exp_loop:
     mov %rbx, %rdx
     and $1, %rdx         # Biore najmniej znaczacy bit
@@ -81,7 +75,9 @@ mant_loop:
     movl $fmt_len, %edx
     int $0x80
 
-    # Konczymy program
-    movl $1, %eax
-    xorl %ebx, %ebx
-    int $0x80
+
+
+# Konczymy program
+movl $1, %eax
+xorl %ebx, %ebx
+int $0x80
