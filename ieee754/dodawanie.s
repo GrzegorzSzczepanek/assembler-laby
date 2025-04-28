@@ -64,6 +64,7 @@ exp_loop:
     # Convert mantissa bits to ASCII
     mov $51, %rcx        # 52 bits, indices 0-51
     lea mant_buf+51, %rdi # Start from end
+
 mant_loop:
     mov %rbx, %rdx
     and $1, %rdx         # Extract least significant bit
