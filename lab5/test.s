@@ -4,13 +4,14 @@
     # .globl symbol1, symbol2, ...
     # Makes the specified symbols (labels) visible to the linker.
     # This allows code outside this file (like a C main function) to call these functions.
-    .globl  testowa, dodaj
+    .globl  testowa, dodaj, dodaj2
 
     # .type symbol, @function
     # Informs the linker that the specified symbol represents a function.
     # This helps with debugging and dynamic linking.
     .type   testowa, @function
     .type   dodaj, @function
+    .type dodaj2, @function
 
     # .text
     # Declares that the following lines contain executable code (text segment).
@@ -89,6 +90,13 @@ dodaj:
 
     # ret
     # Returns control to the caller, with the sum now in %eax.
+    ret
+
+dodaj2:
+    pushq   %rbp
+    movq    %rsp, %rbp
+    addsd   %xmm1, %xmm0  # xmm0 += xmm1
+    popq    %rbp
     ret
 
 # --- Instruction Alternatives ---
