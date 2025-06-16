@@ -1,17 +1,26 @@
 CC = gcc
-CFLAGS = -Wall -m32
-ASFLAGS = --32
+ASM = as
+CFLAGS = -Wall -m64
+ASMFLAGS = --64
 
-all: matrix_det
+TARGET = matrix_det
+ASM_SRC = determinant.asm
+C_SRC = main.c
+ASM_OBJ = $(ASM_SRC:.asm=.o)
+C_OBJ = $(C_SRC:.c=.o)
 
-matrix_det: matrix_det.o matrix_det_c.o
-	$(CC) $(CFLAGS) -o matrix_det matrix_det.o matrix_det_c.o
+all: $(TARGET)
 
-matrix_det.o: matrix_det.s
-	$(CC) $(CFLAGS) -c matrix_det.s -o matrix_det.o
+$(TARGET): $(ASM_OBJ) $(C_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^
 
-matrix_det_c.o: matrix_det.c
-	$(CC) $(CFLAGS) -c matrix_det.c -o matrix_det_c.o
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o: %.asm
+	$(ASM) $(ASMFLAGS) $< -o $@
 
 clean:
-	rm -f *.o matrix_det
+	rm -f $(TARGET) *.o
+
+.PHONY: all clean
